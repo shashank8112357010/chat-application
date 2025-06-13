@@ -580,7 +580,7 @@ const styles = StyleSheet.create({
   // Chat view styles
   chatHeader: {
     backgroundColor: '#E53E3E',
-    paddingTop: 60,
+    paddingTop: 80,
     paddingBottom: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
