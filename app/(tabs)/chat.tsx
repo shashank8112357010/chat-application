@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { MessageCircle, Search, Send, Mail, Phone } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { EmailService } from '@/components/EmailService';
 import { NotificationService } from '@/components/NotificationService';
 import { IVRService } from '@/components/IVRService';
@@ -34,6 +35,7 @@ interface ChatConversation {
 }
 
 export default function ChatScreen() {
+  const insets = useSafeAreaInsets();
   const [conversations, setConversations] = useState<ChatConversation[]>([
     {
       id: '1',
@@ -112,14 +114,14 @@ export default function ChatScreen() {
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredConversations = conversations.filter(conv =>
-    conv.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredConversations = conversations.filter((conv) =>
+    conv.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return;
 
-    const conversation = conversations.find(c => c.id === selectedChat);
+    const conversation = conversations.find((c) => c.id === selectedChat);
     if (!conversation) return;
 
     const message: ChatMessage = {
@@ -131,17 +133,19 @@ export default function ChatScreen() {
     };
 
     // Update conversation
-    setConversations(prev => prev.map(conv => {
-      if (conv.id === selectedChat) {
-        return {
-          ...conv,
-          messages: [...conv.messages, message],
-          lastMessage: message.text,
-          timestamp: message.timestamp,
-        };
-      }
-      return conv;
-    }));
+    setConversations((prev) =>
+      prev.map((conv) => {
+        if (conv.id === selectedChat) {
+          return {
+            ...conv,
+            messages: [...conv.messages, message],
+            lastMessage: message.text,
+            timestamp: message.timestamp,
+          };
+        }
+        return conv;
+      }),
+    );
 
     // Send email notification to the recipient
     if (conversation.email) {
@@ -151,7 +155,7 @@ export default function ChatScreen() {
         {
           senderName: 'Tonyah',
           messagePreview: newMessage.trim(),
-        }
+        },
       );
     }
 
@@ -178,18 +182,24 @@ export default function ChatScreen() {
       },
       () => {
         // Video call
-        Alert.alert('Video Call', `Starting video call with ${conversation.name}`);
+        Alert.alert(
+          'Video Call',
+          `Starting video call with ${conversation.name}`,
+        );
       },
       () => {
         // Leave message
-        Alert.alert('Voice Message', `Voice message sent to ${conversation.name}`);
-      }
+        Alert.alert(
+          'Voice Message',
+          `Voice message sent to ${conversation.name}`,
+        );
+      },
     );
 
     await IVRService.initiateIVRCall(
       conversation.phoneNumber,
       'Tonyah',
-      menuOptions
+      menuOptions,
     );
   };
 
@@ -214,10 +224,15 @@ export default function ChatScreen() {
 
   const formatTime = (timestamp: Date) => {
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60 * 60));
-    
+    const diffInHours = Math.floor(
+      (now.getTime() - timestamp.getTime()) / (1000 * 60 * 60),
+    );
+
     if (diffInHours < 1) {
-      return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return timestamp.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
     } else if (diffInHours < 24) {
       return `${diffInHours}h ago`;
     } else {
@@ -225,34 +240,36 @@ export default function ChatScreen() {
     }
   };
 
-  const selectedConversation = conversations.find(c => c.id === selectedChat);
+  const selectedConversation = conversations.find((c) => c.id === selectedChat);
 
   if (selectedChat && selectedConversation) {
     return (
       <View style={styles.container}>
         <View style={styles.chatHeader}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backButton}
             onPress={() => setSelectedChat(null)}
           >
             <Text style={styles.backText}>←</Text>
           </TouchableOpacity>
-          
+
           <View style={styles.chatHeaderInfo}>
-            <Text style={styles.chatHeaderName}>{selectedConversation.name}</Text>
+            <Text style={styles.chatHeaderName}>
+              {selectedConversation.name}
+            </Text>
             <Text style={styles.chatHeaderStatus}>
               {selectedConversation.isOnline ? 'Online' : 'Offline'}
             </Text>
           </View>
 
           <View style={styles.chatHeaderActions}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.headerActionButton}
               onPress={() => handleEmailContact(selectedConversation)}
             >
               <Mail size={20} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.headerActionButton}
               onPress={() => handleCall(selectedConversation)}
             >
@@ -261,7 +278,10 @@ export default function ChatScreen() {
           </View>
         </View>
 
-        <ScrollView style={styles.messagesContainer} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.messagesContainer}
+          showsVerticalScrollIndicator={false}
+        >
           {selectedConversation.messages.map((message) => (
             <View
               key={message.id}
@@ -270,16 +290,24 @@ export default function ChatScreen() {
                 message.isOwn ? styles.ownMessage : styles.otherMessage,
               ]}
             >
-              <Text style={[
-                styles.messageText,
-                message.isOwn ? styles.ownMessageText : styles.otherMessageText,
-              ]}>
+              <Text
+                style={[
+                  styles.messageText,
+                  message.isOwn
+                    ? styles.ownMessageText
+                    : styles.otherMessageText,
+                ]}
+              >
                 {message.text}
               </Text>
-              <Text style={[
-                styles.messageTime,
-                message.isOwn ? styles.ownMessageTime : styles.otherMessageTime,
-              ]}>
+              <Text
+                style={[
+                  styles.messageTime,
+                  message.isOwn
+                    ? styles.ownMessageTime
+                    : styles.otherMessageTime,
+                ]}
+              >
                 {formatTime(message.timestamp)}
               </Text>
             </View>
@@ -295,7 +323,7 @@ export default function ChatScreen() {
             placeholderTextColor="#999"
             multiline
           />
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.sendButton}
             onPress={handleSendMessage}
           >
@@ -333,10 +361,9 @@ export default function ChatScreen() {
               {searchQuery ? 'No conversations found' : 'No Chats Yet'}
             </Text>
             <Text style={styles.emptyText}>
-              {searchQuery 
+              {searchQuery
                 ? 'Try searching with a different name'
-                : 'Start a conversation with someone from the Discover tab'
-              }
+                : 'Start a conversation with someone from the Discover tab'}
             </Text>
           </View>
         ) : (
@@ -353,12 +380,16 @@ export default function ChatScreen() {
                       {conversation.name.charAt(0).toUpperCase()}
                     </Text>
                   </View>
-                  {conversation.isOnline && <View style={styles.onlineIndicator} />}
+                  {conversation.isOnline && (
+                    <View style={styles.onlineIndicator} />
+                  )}
                 </View>
 
                 <View style={styles.conversationInfo}>
                   <View style={styles.conversationHeader}>
-                    <Text style={styles.conversationName}>{conversation.name}</Text>
+                    <Text style={styles.conversationName}>
+                      {conversation.name}
+                    </Text>
                     <Text style={styles.conversationTime}>
                       {formatTime(conversation.timestamp)}
                     </Text>
@@ -376,15 +407,15 @@ export default function ChatScreen() {
                       </Text>
                     </View>
                   )}
-                  
+
                   <View style={styles.actionButtons}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={styles.actionButton}
                       onPress={() => handleEmailContact(conversation)}
                     >
                       <Mail size={16} color="#E53E3E" />
                     </TouchableOpacity>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={styles.actionButton}
                       onPress={() => handleCall(conversation)}
                     >
@@ -408,7 +439,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#E53E3E',
-    paddingTop: 60,
+    paddingTop: 80,
     paddingBottom: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
@@ -551,7 +582,7 @@ const styles = StyleSheet.create({
   // Chat view styles
   chatHeader: {
     backgroundColor: '#E53E3E',
-    paddingTop: 60,
+    paddingTop: 80,
     paddingBottom: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',

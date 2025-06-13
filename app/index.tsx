@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,6 +26,7 @@ const languages: LanguageOption[] = [
 
 export default function WelcomeScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('pt');
+  const insets = useSafeAreaInsets();
 
   const handleGetStarted = () => {
     router.push('/phone-verification');
@@ -42,7 +44,12 @@ export default function WelcomeScreen() {
         colors={['rgba(229, 62, 62, 0.9)', 'rgba(229, 62, 62, 0.7)']}
         style={styles.overlay}
       >
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 },
+          ]}
+        >
           <View style={styles.header}>
             <Text style={styles.welcomeTitle}>Welcome to BomPapo</Text>
             <Text style={styles.version}>BP1.88</Text>
@@ -87,7 +94,10 @@ export default function WelcomeScreen() {
               <View style={styles.dot} />
             </View>
 
-            <TouchableOpacity style={styles.getStartedButton} onPress={handleGetStarted}>
+            <TouchableOpacity
+              style={styles.getStartedButton}
+              onPress={handleGetStarted}
+            >
               <Text style={styles.getStartedText}>GET STARTED</Text>
             </TouchableOpacity>
           </View>
@@ -100,8 +110,8 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    width: width,
-    height: height,
+    width: '100%',
+    height: '100%',
   },
   overlay: {
     flex: 1,
@@ -109,8 +119,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 40,
   },
   header: {
     alignItems: 'center',

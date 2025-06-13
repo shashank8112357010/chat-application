@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Menu, Bell, Search, Filter } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - 60) / 3;
@@ -36,13 +37,15 @@ const users: User[] = [
 ];
 
 export default function DiscoverScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
         <TouchableOpacity style={styles.menuButton}>
           <Menu size={24} color="white" />
         </TouchableOpacity>
-        
+
         <View style={styles.userInfo}>
           <Text style={styles.userName}>Tonyah</Text>
           <View style={styles.onlineStatus}>
@@ -98,7 +101,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#E53E3E',
-    paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
