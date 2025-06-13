@@ -42,7 +42,7 @@ export default function DiscoverScreen() {
         <TouchableOpacity style={styles.menuButton}>
           <Menu size={24} color="white" />
         </TouchableOpacity>
-        
+
         <View style={styles.userInfo}>
           <Text style={styles.userName}>Tonyah</Text>
           <View style={styles.onlineStatus}>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#E53E3E',
-    paddingTop: 60,
+    paddingTop: 80,
     paddingBottom: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
