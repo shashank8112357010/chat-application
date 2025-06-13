@@ -20,7 +20,7 @@ interface LanguageOption {
 }
 
 const languages: LanguageOption[] = [
-  { code: 'pt', label: 'Portuguese', flag: '���🇿' },
+  { code: 'pt', label: 'Portuguese', flag: '🇲🇿' },
   { code: 'en', label: 'English', flag: '🇺🇸' },
 ];
 
@@ -119,8 +119,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 80,
-    paddingBottom: 40,
   },
   header: {
     alignItems: 'center',
