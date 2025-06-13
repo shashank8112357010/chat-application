@@ -37,9 +37,11 @@ const users: User[] = [
 ];
 
 export default function DiscoverScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 20 }]}>
         <TouchableOpacity style={styles.menuButton}>
           <Menu size={24} color="white" />
         </TouchableOpacity>
