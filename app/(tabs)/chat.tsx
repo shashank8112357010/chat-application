@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { MessageCircle, Search, Send, Mail, Phone } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { EmailService } from '@/components/EmailService';
 import { NotificationService } from '@/components/NotificationService';
 import { IVRService } from '@/components/IVRService';
