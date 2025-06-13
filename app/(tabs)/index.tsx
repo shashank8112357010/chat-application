@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Menu, Bell, Search, Filter } from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - 60) / 3;
