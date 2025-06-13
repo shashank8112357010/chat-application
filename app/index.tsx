@@ -20,7 +20,7 @@ interface LanguageOption {
 }
 
 const languages: LanguageOption[] = [
-  { code: 'pt', label: 'Portuguese', flag: '🇲🇿' },
+  { code: 'pt', label: 'Portuguese', flag: '���🇿' },
   { code: 'en', label: 'English', flag: '🇺🇸' },
 ];
 
@@ -44,7 +44,12 @@ export default function WelcomeScreen() {
         colors={['rgba(229, 62, 62, 0.9)', 'rgba(229, 62, 62, 0.7)']}
         style={styles.overlay}
       >
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 },
+          ]}
+        >
           <View style={styles.header}>
             <Text style={styles.welcomeTitle}>Welcome to BomPapo</Text>
             <Text style={styles.version}>BP1.88</Text>
