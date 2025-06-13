@@ -26,6 +26,7 @@ const languages: LanguageOption[] = [
 
 export default function WelcomeScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('pt');
+  const insets = useSafeAreaInsets();
 
   const handleGetStarted = () => {
     router.push('/phone-verification');
