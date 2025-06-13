@@ -87,7 +87,10 @@ export default function WelcomeScreen() {
               <View style={styles.dot} />
             </View>
 
-            <TouchableOpacity style={styles.getStartedButton} onPress={handleGetStarted}>
+            <TouchableOpacity
+              style={styles.getStartedButton}
+              onPress={handleGetStarted}
+            >
               <Text style={styles.getStartedText}>GET STARTED</Text>
             </TouchableOpacity>
           </View>
@@ -100,8 +103,8 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    width: width,
-    height: height,
+    width: '100%',
+    height: '100%',
   },
   overlay: {
     flex: 1,
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: 80,
     paddingBottom: 40,
   },
   header: {
