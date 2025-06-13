@@ -35,6 +35,7 @@ interface ChatConversation {
 }
 
 export default function ChatScreen() {
+  const insets = useSafeAreaInsets();
   const [conversations, setConversations] = useState<ChatConversation[]>([
     {
       id: '1',
